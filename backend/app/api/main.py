@@ -20,6 +20,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.game.engine import new_board, apply_move, valid_moves, winner, is_draw, other_player
 from app.rl.agent import QLearningAgent
@@ -124,3 +125,19 @@ def get_game(game_id: str):
     if session is None:
         raise HTTPException(status_code=404, detail="Game not found")
     return MoveResponse(board=list(session.board), status=session.status, agent_move=None)
+
+
+"""
+Serve the frontend's static files (index.html, style.css, script.js) from
+this same server, so one command gives you the whole app on one port.
+IMPORTANT: this must be registered LAST. 
+Starlette (which FastAPI is built on) matches routes in the order they were added, and a mount at
+"/" would otherwise swallow every request -- including /game/new --
+before it ever reached our actual API routes above. 
+Registering it after all the @app.get/@app.post routes means FastAPI checks those
+specific routes first, and only falls back to serving a static file
+when nothing else matched.
+"""
+
+FRONTEND_DIR = Path(__file__).resolve().parents[3] / "frontend"
+app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")

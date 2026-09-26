@@ -1,7 +1,19 @@
-// Point this at wherever the backend is actually running. For local
-// development it's the uvicorn server on port 8000; for a real
-// deployment, change this to the deployed backend's URL.
-const API_BASE = "http://127.0.0.1:8000";
+// If the frontend is served BY the FastAPI backend itself (single-server
+// setup), leave this as "" -- same origin, no CORS needed. If you're
+// running the SPLIT deployment (frontend on GitHub Pages/Vercel, backend
+// on Render), set this to your backend's full deployed URL instead, e.g.
+// "https://your-app-name.onrender.com".
+const API_BASE = "";
+
+// Render's free tier can take 30-60 seconds to wake up from a cold
+// start. Any status-setting function can call this to escalate the
+// message if a request is taking a while, so a slow response reads as
+// "waking up" rather than "broken".
+function armWakeupWarning(initialDelayMs = 4000) {
+  return setTimeout(() => {
+    setStatus("UNIT WAS ASLEEP. WAKING UP... THIS CAN TAKE UP TO A MINUTE.");
+  }, initialDelayMs);
+}
 
 const statusLine = document.getElementById("statusLine");
 const board = document.getElementById("board");
@@ -38,6 +50,7 @@ function setCellsEnabled(enabled) {
 async function startNewGame() {
   humanMark = markSelect.value;
   setStatus("CONNECTING TO NEURAL DEFENSE UNIT...");
+  const wakeupTimer = armWakeupWarning();
 
   try {
     const resp = await fetch(`${API_BASE}/game/new`, {
@@ -45,6 +58,7 @@ async function startNewGame() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ human_mark: humanMark }),
     });
+    clearTimeout(wakeupTimer);
     if (!resp.ok) throw new Error(`Server returned ${resp.status}`);
     const data = await resp.json();
 
@@ -61,6 +75,7 @@ async function startNewGame() {
       handleGameOver(data.status);
     }
   } catch (err) {
+    clearTimeout(wakeupTimer);
     setStatus(`CONNECTION ERROR: ${err.message}. IS THE BACKEND RUNNING?`);
   }
 }
@@ -68,6 +83,7 @@ async function startNewGame() {
 async function playMove(position) {
   setCellsEnabled(false);
   setStatus("TRANSMITTING MOVE...");
+  const wakeupTimer = armWakeupWarning();
 
   try {
     const resp = await fetch(`${API_BASE}/game/move`, {
@@ -75,6 +91,7 @@ async function playMove(position) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ game_id: gameId, position }),
     });
+    clearTimeout(wakeupTimer);
     if (!resp.ok) {
       const errBody = await resp.json();
       setStatus(`REJECTED: ${errBody.detail}`);
@@ -91,6 +108,7 @@ async function playMove(position) {
       handleGameOver(data.status);
     }
   } catch (err) {
+    clearTimeout(wakeupTimer);
     setStatus(`CONNECTION ERROR: ${err.message}`);
     setCellsEnabled(true);
   }
