@@ -13,6 +13,11 @@ minimax_value(board, player) returns the outcome of `board` from
      0 = draw
     -1 = this player loses
 """
+import sys
+from pathlib import Path
+
+# Add the 'backend' folder (2 levels up from train.py) to Python's import path
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
 from functools import lru_cache
 

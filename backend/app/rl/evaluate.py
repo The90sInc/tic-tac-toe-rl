@@ -10,6 +10,12 @@ the "optimal play" subtree, not a sample, so if it reports zero losses,
 that's a proof, not a statistic.
 """
 
+import sys
+from pathlib import Path
+
+# Add the 'backend' folder (2 levels up from train.py) to Python's import path
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+
 from app.game.engine import (
     new_board, valid_moves, apply_move, winner, is_draw, other_player,
 )

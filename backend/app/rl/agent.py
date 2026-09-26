@@ -20,6 +20,12 @@ import pickle
 import random
 from typing import Optional
 
+import sys
+from pathlib import Path
+
+# Add the 'backend' folder (2 levels up from train.py) to Python's import path
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+
 from app.game.symmetry import canonical_form
 
 class QLearningAgent:
