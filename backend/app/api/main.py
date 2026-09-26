@@ -13,9 +13,9 @@ ever needs to make one request per human turn.
 import sys
 from pathlib import Path
 
-# Add the 'backend' folder (2 levels up from train.py) to Python's import path
-sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
-
+# Locate the models directory relative to this file (main.py)
+BASE_DIR = Path(__file__).resolve().parent.parent  # Points to 'backend/app'
+MODEL_PATH = BASE_DIR / "models" / "q_table.pkl"
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
@@ -37,7 +37,7 @@ async def lifespan(app: FastAPI):
     it per-request would be wasteful and would also risk race
     conditions if the file were being rewritten mid-request.
     """
-    agent.load("backend/app/models/q_table.pkl")
+    agent.load(MODEL_PATH)
     yield
 
 
