@@ -121,5 +121,5 @@ def train(
 
 if __name__ == "__main__":
     trained_agent = train()
-    trained_agent.save("app/models/q_table.pkl")
-    print(f"\nSaved Q-table with {len(trained_agent.q_table)} entries to app/models/q_table.pkl")
+    trained_agent.save("backend/app/models/q_table.pkl")
+    print(f"\nSaved Q-table with {len(trained_agent.q_table)} entries to backend/app/models/q_table.pkl")
