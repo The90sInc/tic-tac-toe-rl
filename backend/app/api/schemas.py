@@ -13,9 +13,11 @@ from pydantic import BaseModel, Field
 
 
 class NewGameRequest(BaseModel):
-    # Which mark the HUMAN wants to play. Defaults to "X" (human moves
-    # first). If the human picks "O", the agent moves first and its
-    # opening move is included in the response.
+    """
+    Which mark the HUMAN wants to play. Defaults to "X" (human moves first). 
+    If the human picks "O", the agent moves first and its
+    opening move is included in the response.
+    """
     human_mark: str = Field(default="X", pattern="^[XO]$")
 
 
