@@ -135,5 +135,5 @@ def run_full_verification(agent: QLearningAgent) -> None:
 
 if __name__ == "__main__":
     agent = QLearningAgent()
-    agent.load("app/models/q_table.pkl")
+    agent.load("backend/app/models/q_table.pkl")
     run_full_verification(agent)
