@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TIC-TAC-TOE // NEURAL DEFENSE UNIT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scanlines"></div>
+<div class="vignette"></div>
+
+<main class="terminal-window">
+  <header class="terminal-header">
+    [ TIC-TAC-TOE // NEURAL DEFENSE UNIT v1.0 ]
+  </header>
+
+  <div class="status-line" id="statusLine">&gt; SYSTEM READY. SELECT DESIGNATION AND INITIATE.<span class="cursor">_</span></div>
+
+  <div class="controls">
+    <label class="select-label">
+      DESIGNATION:
+      <select id="markSelect">
+        <option value="X">X — FIRST STRIKE</option>
+        <option value="O">O — SECOND STRIKE</option>
+      </select>
+    </label>
+    <button id="newGameBtn" class="term-button">[ NEW GAME ]</button>
+  </div>
+
+  <div class="board" id="board">
+    <button class="cell" data-pos="0" aria-label="cell 0"></button>
+    <button class="cell" data-pos="1" aria-label="cell 1"></button>
+    <button class="cell" data-pos="2" aria-label="cell 2"></button>
+    <button class="cell" data-pos="3" aria-label="cell 3"></button>
+    <button class="cell" data-pos="4" aria-label="cell 4"></button>
+    <button class="cell" data-pos="5" aria-label="cell 5"></button>
+    <button class="cell" data-pos="6" aria-label="cell 6"></button>
+    <button class="cell" data-pos="7" aria-label="cell 7"></button>
+    <button class="cell" data-pos="8" aria-label="cell 8"></button>
+  </div>
+
+  <footer class="terminal-footer">
+    OPPONENT: Q-LEARNING AGENT // TRAINED VIA 20,000+ SELF-PLAY EPISODES // VERIFIED UNBEATABLE
+  </footer>
+</main>
+
+<div class="loss-overlay" id="lossOverlay">
+  <div class="skull">&#128128;</div>
+  <div class="loss-text">HAHAHAHA, YOU LOSE</div>
+  <button id="retryBtn" class="term-button retry-button">[ TRY AGAIN ]</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
